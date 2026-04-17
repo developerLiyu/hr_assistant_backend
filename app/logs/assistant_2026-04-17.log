@@ -1,0 +1,145 @@
+2026-04-17 09:50:57,114 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\screening.py", line 15, in resume_match_by_position
+    return await screening.resume_match_by_position_service(request, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\screening.py", line 31, in resume_match_by_position_service
+    yaoqiu_message_embedding: List[float] = await milvus_util.async_generate_embedding(yaoqiu_message)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'JobPosition' object has no attribute 'job_decription'. Did you mean: 'job_description'?
+2026-04-17 09:53:02,267 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\screening.py", line 15, in resume_match_by_position
+    return await screening.resume_match_by_position_service(request, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\screening.py", line 26, in resume_match_by_position_service
+    job_decription = position_obj.job_decription
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: 'JobPosition' object has no attribute 'job_decription'. Did you mean: 'job_description'?
+2026-04-17 09:54:40,253 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\milvus_util.py", line 361, in async_search_embedding
+    search_results = await loop.run_in_executor(
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<9 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\milvus_util.py", line 363, in <lambda>
+    lambda: client.search(
+            ~~~~~~~~~~~~~^
+        collection_name=MILVUS_COLLECTION_NAME_RESUME,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<4 lines>...
+        output_fields=["resume_id"]  # 需要返回的字段
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\pymilvus\milvus_client\milvus_client.py", line 444, in search
+    return conn.search(
+           ~~~~~~~~~~~^
+        collection_name=collection_name,
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<13 lines>...
+        **kwargs,
+        ^^^^^^^^^
+    )
+    ^
+TypeError: pymilvus.client.grpc_handler.GrpcHandler.search() got multiple values for keyword argument 'param'
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\screening.py", line 15, in resume_match_by_position
+    return await screening.resume_match_by_position_service(request, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\screening.py", line 34, in resume_match_by_position_service
+    resume_info_list: List[dict] = await milvus_util.async_search_embedding(yaoqiu_message_embedding, top_n)
+                                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\milvus_util.py", line 399, in async_search_embedding
+    raise RuntimeError(f"Milvus异步搜索向量异常: {str(e)}") from e
+RuntimeError: Milvus异步搜索向量异常: pymilvus.client.grpc_handler.GrpcHandler.search() got multiple values for keyword argument 'param'
+2026-04-17 09:59:25,647 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\screening.py", line 15, in resume_match_by_position
+    return await screening.resume_match_by_position_service(request, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\screening.py", line 58, in resume_match_by_position_service
+    matched_resume = MatchedResume.model_validate(resume_obj)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\pydantic\main.py", line 716, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        obj,
+        ^^^^
+    ...<5 lines>...
+        by_name=by_name,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+pydantic_core._pydantic_core.ValidationError: 3 validation errors for MatchedResume
+resume_id
+  Field required [type=missing, input_value=<app.models.resume.Resume...t at 0x000001A46DB3BCB0>, input_type=Resume]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+match_score
+  Field required [type=missing, input_value=<app.models.resume.Resume...t at 0x000001A46DB3BCB0>, input_type=Resume]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing
+similarity
+  Field required [type=missing, input_value=<app.models.resume.Resume...t at 0x000001A46DB3BCB0>, input_type=Resume]
+    For further information visit https://errors.pydantic.dev/2.12/v/missing

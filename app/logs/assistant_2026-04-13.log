@@ -1,0 +1,125 @@
+2026-04-13 11:37:57,912 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 28, in get_db
+    await session.commit()
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 1000, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 101, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\orm\session.py", line 971, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (pymysql.err.IntegrityError) (1048, "Column 'candidate_name' cannot be null")
+[SQL: INSERT INTO resume (candidate_name, phone, email, education, school, major, work_years, current_company, current_position, resume_summary, original_content, file_path, file_name, file_type, file_size, milvus_id, position_id, status, parse_status, is_deleted, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now(), now())]
+[parameters: (None, None, None, None, None, None, None, None, None, None, '卜佳宇\n性别：男 工作经验：1.5年\n电话：17330391602（同微信） 邮箱：jy32199@outlook.com\n、\n 相关技能\n\uf0d8熟练掌握Java核心基础，深入理解集合框架底层源码及实现原理，具备扎实的Java编程功底和良好的编码习惯；\n\uf0d8熟练掌握Spr ... (2401 characters truncated) ... 面对变化与挑战，我能快速调整并主动学习，在压力中保持稳定心态与高效产出。\n•习惯于设定清晰目标与节点，统筹资源、把控过程，确保任务高质高效完成。\n•善于跨角色沟通，主动协同支持，能迅速适应不同团队文化，共同推进目标实现。\n•对结果负责，恪守诚信；勇于面对问题，并能在复盘后持续迭代方法与流程。', '20260413\\4d576dfc59854f27a87a73ff204f3c65.pdf', '卜佳宇JAVA_AI简历.pdf', 'pdf', 338990, None, 1, 1, 0, 0)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-04-13 14:54:16,217 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 28, in get_db
+    await session.commit()
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\ext\asyncio\session.py", line 1000, in commit
+    await greenlet_spawn(self.sync_session.commit)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\util\_concurrency_py3k.py", line 190, in greenlet_spawn
+    result = context.switch(*args, **kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\orm\session.py", line 2030, in commit
+    trans.commit(_to_root=True)
+    ~~~~~~~~~~~~^^^^^^^^^^^^^^^
+  File "<string>", line 2, in commit
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\orm\state_changes.py", line 101, in _go
+    self._raise_for_prerequisite_state(fn.__name__, current_state)
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\sqlalchemy\orm\session.py", line 971, in _raise_for_prerequisite_state
+    raise sa_exc.PendingRollbackError(
+    ...<6 lines>...
+    )
+sqlalchemy.exc.PendingRollbackError: This Session's transaction has been rolled back due to a previous exception during flush. To begin a new transaction with this Session, first issue Session.rollback(). Original exception was: (pymysql.err.IntegrityError) (1048, "Column 'candidate_name' cannot be null")
+[SQL: INSERT INTO resume (candidate_name, phone, email, education, school, major, work_years, current_company, current_position, resume_summary, original_content, file_path, file_name, file_type, file_size, milvus_id, position_id, status, parse_status, is_deleted, created_at, updated_at) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, now(), now())]
+[parameters: (None, None, None, None, None, None, None, None, None, None, '卜佳宇\n性别：男 工作经验：1.5年\n电话：17330391602（同微信） 邮箱：jy32199@outlook.com\n、\n 相关技能\n\uf0d8熟练掌握Java核心基础，深入理解集合框架底层源码及实现原理，具备扎实的Java编程功底和良好的编码习惯；\n\uf0d8熟练掌握Spr ... (2401 characters truncated) ... 面对变化与挑战，我能快速调整并主动学习，在压力中保持稳定心态与高效产出。\n•习惯于设定清晰目标与节点，统筹资源、把控过程，确保任务高质高效完成。\n•善于跨角色沟通，主动协同支持，能迅速适应不同团队文化，共同推进目标实现。\n•对结果负责，恪守诚信；勇于面对问题，并能在复盘后持续迭代方法与流程。', '20260413\\5b10c6ee20ab447c9fbe7fa3d4da74b7.pdf', '卜佳宇JAVA_AI简历.pdf', 'pdf', 338990, None, 1, 1, 0, 0)]
+(Background on this error at: https://sqlalche.me/e/20/gkpj) (Background on this error at: https://sqlalche.me/e/20/7s2a)
+2026-04-13 15:10:36,109 - assistant - ERROR - llm_util.py:108 - LLM解析失败: Invalid input type <class 'NoneType'>. Must be a PromptValue, str, or list of BaseMessages.
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 105, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 478, in ainvoke
+    [self._convert_input(input)],
+     ~~~~~~~~~~~~~~~~~~~^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 438, in _convert_input
+    raise ValueError(msg)
+ValueError: Invalid input type <class 'NoneType'>. Must be a PromptValue, str, or list of BaseMessages.
+2026-04-13 15:30:54,632 - assistant - ERROR - llm_util.py:113 - LLM解析失败: Failed to parse ResumeParseResult from completion {"candidate_name": "卜佳宇", "phone": "17330391602", "email": "jy32199@outlook.com", "education": "本科", "school": "河北北方学院", "major": "数据科学与大数据技术", "work_years": 1.5, "current_company": "奇瑞汽车股份有限公司", "current_position": null, "skills": ["Java", "Spring", "SpringBoot", "MyBatis-Plus", "SpringCloudAlibaba", "Vllm", "Langchain4j", "RAG", "MySQL", "Redis", "Kafka", "Canal", "Milvus", "Elasticsearch", "MongoDB"], "work_experience": [{"company": "奇瑞汽车股份有限公司", "position": null, "start_date": "2024.10", "end_date": "至今", "description": null}], "project_experience": [{"project_name": "设备运维与智能诊断 Agent", "role": null, "description": "通过 LangChain4j 整合大模型，构建工业设备智能运维 Agent。利用 RAG 技术构建专家知识库，引入 LangChainGraph 实现故障诊断逻辑编排，开发 MCP 协议插件实现设备非侵入式访问。"}, {"project_name": "供应商绩效评价系统", "role": null, "description": "奇瑞供应链数字化转型工程，构建自动化数据流水线，实时采集核心指标，实现对 300+ 家供应商的动态画像、自动评分及末位淘汰预警，提供精准决策支撑。"}], "education_experience": [{"school": "河北北方学院", "major": "数据科学与大数据技术", "degree": "本科", "start_date": "2022.09", "end_date": "2026.06"}], "resume_summary": "1.5 年 Java 开发，精通 SpringCloud 与大模型。熟悉 RAG。具备工业 AI 及供应链系统实战经验，擅长性能优化。"}. Got: 1 validation error for ResumeParseResult
+work_years
+  Input should be a valid integer, got a number with a fractional part [type=int_from_float, input_value=1.5, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.12/v/int_from_float
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 
+Traceback (most recent call last):
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\pydantic.py", line 28, in _parse_obj
+    return self.pydantic_object.model_validate(obj)
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\pydantic\main.py", line 716, in model_validate
+    return cls.__pydantic_validator__.validate_python(
+           ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^
+        obj,
+        ^^^^
+    ...<5 lines>...
+        by_name=by_name,
+        ^^^^^^^^^^^^^^^^
+    )
+    ^
+pydantic_core._pydantic_core.ValidationError: 1 validation error for ResumeParseResult
+work_years
+  Input should be a valid integer, got a number with a fractional part [type=int_from_float, input_value=1.5, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.12/v/int_from_float
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 110, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 230, in ainvoke
+    return await self._acall_with_config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 2111, in _acall_with_config
+    output: Output = await coro_with_context(coro, context)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 297, in aparse_result
+    return await run_in_executor(None, self.parse_result, result, partial=partial)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 636, in run_in_executor
+    return await asyncio.get_running_loop().run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 627, in wrapper
+    return func(*args, **kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\pydantic.py", line 76, in parse_result
+    return self._parse_obj(json_object)
+           ~~~~~~~~~~~~~~~^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\pydantic.py", line 35, in _parse_obj
+    raise self._parser_exception(e, obj) from e
+langchain_core.exceptions.OutputParserException: Failed to parse ResumeParseResult from completion {"candidate_name": "卜佳宇", "phone": "17330391602", "email": "jy32199@outlook.com", "education": "本科", "school": "河北北方学院", "major": "数据科学与大数据技术", "work_years": 1.5, "current_company": "奇瑞汽车股份有限公司", "current_position": null, "skills": ["Java", "Spring", "SpringBoot", "MyBatis-Plus", "SpringCloudAlibaba", "Vllm", "Langchain4j", "RAG", "MySQL", "Redis", "Kafka", "Canal", "Milvus", "Elasticsearch", "MongoDB"], "work_experience": [{"company": "奇瑞汽车股份有限公司", "position": null, "start_date": "2024.10", "end_date": "至今", "description": null}], "project_experience": [{"project_name": "设备运维与智能诊断 Agent", "role": null, "description": "通过 LangChain4j 整合大模型，构建工业设备智能运维 Agent。利用 RAG 技术构建专家知识库，引入 LangChainGraph 实现故障诊断逻辑编排，开发 MCP 协议插件实现设备非侵入式访问。"}, {"project_name": "供应商绩效评价系统", "role": null, "description": "奇瑞供应链数字化转型工程，构建自动化数据流水线，实时采集核心指标，实现对 300+ 家供应商的动态画像、自动评分及末位淘汰预警，提供精准决策支撑。"}], "education_experience": [{"school": "河北北方学院", "major": "数据科学与大数据技术", "degree": "本科", "start_date": "2022.09", "end_date": "2026.06"}], "resume_summary": "1.5 年 Java 开发，精通 SpringCloud 与大模型。熟悉 RAG。具备工业 AI 及供应链系统实战经验，擅长性能优化。"}. Got: 1 validation error for ResumeParseResult
+work_years
+  Input should be a valid integer, got a number with a fractional part [type=int_from_float, input_value=1.5, input_type=float]
+    For further information visit https://errors.pydantic.dev/2.12/v/int_from_float
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 

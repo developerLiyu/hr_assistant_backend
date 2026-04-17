@@ -1,0 +1,604 @@
+2026-04-14 10:39:52,979 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 19, in upload_resumes
+    return await async_upload_service(files, position_id, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\resume.py", line 83, in async_upload_service
+    inner_files = await async_unzip_file(file)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\file_util.py", line 74, in async_unzip_file
+    async with aio_open(zip_path, "wb") as f:
+               ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\base.py", line 73, in __aenter__
+    return await self
+           ^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\base.py", line 69, in __await__
+    self._obj = yield from self._coro.__await__()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\threadpool\__init__.py", line 93, in _open
+    f = await loop.run_in_executor(executor, cb)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/832962467db24e969ac8914fce3bdfd3.zip'
+2026-04-14 11:57:07,356 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 19, in upload_resumes
+    return await async_upload_service(files, position_id, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\resume.py", line 83, in async_upload_service
+    inner_files = await async_unzip_file(file)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\file_util.py", line 102, in async_unzip_file
+    async with aio_open(zip_path, "wb") as f:
+               ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\base.py", line 73, in __aenter__
+    return await self
+           ^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\base.py", line 69, in __await__
+    self._obj = yield from self._coro.__await__()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\threadpool\__init__.py", line 93, in _open
+    f = await loop.run_in_executor(executor, cb)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+FileNotFoundError: [Errno 2] No such file or directory: '/tmp/6ce4429f027e41e68c690f77bd4fdbf9.zip'
+2026-04-14 12:36:20,125 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 19, in upload_resumes
+    return await async_upload_service(files, position_id, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\resume.py", line 83, in async_upload_service
+    inner_files = await async_unzip_file(file)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\file_util.py", line 102, in async_unzip_file
+    async with aio_open(zip_path, "wb") as f:
+               ~~~~~~~~^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\base.py", line 73, in __aenter__
+    return await self
+           ^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\base.py", line 69, in __await__
+    self._obj = yield from self._coro.__await__()
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\aiofiles\threadpool\__init__.py", line 93, in _open
+    f = await loop.run_in_executor(executor, cb)
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+FileNotFoundError: [Errno 2] No such file or directory: 'uploads/tmp/252f931865584cf684c1eba52a528c8f.zip'
+2026-04-14 12:47:39,327 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\file_util.py", line 125, in async_unzip_file
+    upload_file = UploadFile(fname, file=f) # 构建伪UploadFile对象
+TypeError: UploadFile.__init__() got multiple values for argument 'file'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 19, in upload_resumes
+    return await async_upload_service(files, position_id, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\resume.py", line 83, in async_upload_service
+    inner_files = await async_unzip_file(file)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\file_util.py", line 130, in async_unzip_file
+    os.remove(zip_abs_path)
+    ~~~~~~~~~^^^^^^^^^^^^^^
+PermissionError: [WinError 5] 拒绝访问。: 'uploads/tmp'
+2026-04-14 12:56:58,699 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 19, in upload_resumes
+    return await async_upload_service(files, position_id, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\resume.py", line 83, in async_upload_service
+    inner_files = await async_unzip_file(file)
+                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\file_util.py", line 125, in async_unzip_file
+    upload_file = UploadFile(fname, file=f) # 构建伪UploadFile对象
+TypeError: UploadFile.__init__() got multiple values for argument 'file'
+2026-04-14 13:40:43,774 - assistant - ERROR - llm_util.py:113 - LLM解析失败: Invalid json output: 
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 
+Traceback (most recent call last):
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\json.py", line 88, in parse_result
+    return parse_json_markdown(text)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 163, in parse_json_markdown
+    return _parse_json(json_str, parser=parser)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 191, in _parse_json
+    return parser(json_str)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 136, in parse_partial_json
+    return json.loads(s, strict=strict)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\__init__.py", line 365, in loads
+    return cls(**kw).decode(s)
+           ~~~~~~~~~~~~~~~~^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 110, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 230, in ainvoke
+    return await self._acall_with_config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 2111, in _acall_with_config
+    output: Output = await coro_with_context(coro, context)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 297, in aparse_result
+    return await run_in_executor(None, self.parse_result, result, partial=partial)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 636, in run_in_executor
+    return await asyncio.get_running_loop().run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 627, in wrapper
+    return func(*args, **kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\pydantic.py", line 75, in parse_result
+    json_object = super().parse_result(result)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\json.py", line 91, in parse_result
+    raise OutputParserException(msg, llm_output=text) from e
+langchain_core.exceptions.OutputParserException: Invalid json output: 
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 
+2026-04-14 13:52:44,397 - assistant - ERROR - llm_util.py:113 - LLM解析失败: Invalid json output: 
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 
+Traceback (most recent call last):
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\json.py", line 88, in parse_result
+    return parse_json_markdown(text)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 163, in parse_json_markdown
+    return _parse_json(json_str, parser=parser)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 191, in _parse_json
+    return parser(json_str)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 136, in parse_partial_json
+    return json.loads(s, strict=strict)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\__init__.py", line 365, in loads
+    return cls(**kw).decode(s)
+           ~~~~~~~~~~~~~~~~^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 110, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 230, in ainvoke
+    return await self._acall_with_config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 2111, in _acall_with_config
+    output: Output = await coro_with_context(coro, context)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 297, in aparse_result
+    return await run_in_executor(None, self.parse_result, result, partial=partial)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 636, in run_in_executor
+    return await asyncio.get_running_loop().run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 627, in wrapper
+    return func(*args, **kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\pydantic.py", line 75, in parse_result
+    json_object = super().parse_result(result)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\json.py", line 91, in parse_result
+    raise OutputParserException(msg, llm_output=text) from e
+langchain_core.exceptions.OutputParserException: Invalid json output: 
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 
+2026-04-14 15:59:14,281 - assistant - ERROR - llm_util.py:113 - LLM解析失败: Error code: 500 - {'error': {'message': '<500> InternalError.Algo: An error occurred in model serving, error message is: [There are no suitable clusters.]', 'type': 'BalanceError', 'param': None, 'code': 'BalanceError'}, 'id': 'chatcmpl-37ebede3-dae0-957a-bbf3-31bfef96d433', 'request_id': '37ebede3-dae0-957a-bbf3-31bfef96d433'}
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 110, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 477, in ainvoke
+    llm_result = await self.agenerate_prompt(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<8 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1196, in agenerate_prompt
+    return await self.agenerate(
+           ^^^^^^^^^^^^^^^^^^^^^
+        prompt_messages, stop=stop, callbacks=callbacks, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1154, in agenerate
+    raise exceptions[0]
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1423, in _agenerate_with_cache
+    result = await self._agenerate(
+             ^^^^^^^^^^^^^^^^^^^^^^
+        messages, stop=stop, run_manager=run_manager, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_openai\chat_models\base.py", line 1754, in _agenerate
+    _handle_openai_api_error(e)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_openai\chat_models\base.py", line 1747, in _agenerate
+    raw_response = await self.async_client.with_raw_response.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **payload
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_legacy_response.py", line 384, in wrapped
+    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2714, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<49 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_base_client.py", line 1884, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_base_client.py", line 1669, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.InternalServerError: Error code: 500 - {'error': {'message': '<500> InternalError.Algo: An error occurred in model serving, error message is: [There are no suitable clusters.]', 'type': 'BalanceError', 'param': None, 'code': 'BalanceError'}, 'id': 'chatcmpl-37ebede3-dae0-957a-bbf3-31bfef96d433', 'request_id': '37ebede3-dae0-957a-bbf3-31bfef96d433'}
+2026-04-14 15:59:25,138 - assistant - ERROR - llm_util.py:113 - LLM解析失败: Error code: 500 - {'error': {'message': '<500> InternalError.Algo: An error occurred in model serving, error message is: [There are no suitable clusters.]', 'type': 'BalanceError', 'param': None, 'code': 'BalanceError'}, 'id': 'chatcmpl-e5adf59c-8eef-9714-8493-781e74141e95', 'request_id': 'e5adf59c-8eef-9714-8493-781e74141e95'}
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 110, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 477, in ainvoke
+    llm_result = await self.agenerate_prompt(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<8 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1196, in agenerate_prompt
+    return await self.agenerate(
+           ^^^^^^^^^^^^^^^^^^^^^
+        prompt_messages, stop=stop, callbacks=callbacks, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1154, in agenerate
+    raise exceptions[0]
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1423, in _agenerate_with_cache
+    result = await self._agenerate(
+             ^^^^^^^^^^^^^^^^^^^^^^
+        messages, stop=stop, run_manager=run_manager, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_openai\chat_models\base.py", line 1754, in _agenerate
+    _handle_openai_api_error(e)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_openai\chat_models\base.py", line 1747, in _agenerate
+    raw_response = await self.async_client.with_raw_response.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **payload
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_legacy_response.py", line 384, in wrapped
+    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2714, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<49 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_base_client.py", line 1884, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_base_client.py", line 1669, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.InternalServerError: Error code: 500 - {'error': {'message': '<500> InternalError.Algo: An error occurred in model serving, error message is: [There are no suitable clusters.]', 'type': 'BalanceError', 'param': None, 'code': 'BalanceError'}, 'id': 'chatcmpl-e5adf59c-8eef-9714-8493-781e74141e95', 'request_id': 'e5adf59c-8eef-9714-8493-781e74141e95'}
+2026-04-14 16:01:40,937 - assistant - ERROR - llm_util.py:113 - LLM解析失败: Error code: 500 - {'error': {'message': '<500> InternalError.Algo: An error occurred in model serving, error message is: [There are no suitable clusters.]', 'type': 'BalanceError', 'param': None, 'code': 'BalanceError'}, 'id': 'chatcmpl-78d18c5c-cdd6-969e-a1a0-39e97fe1e2d3', 'request_id': '78d18c5c-cdd6-969e-a1a0-39e97fe1e2d3'}
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 110, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 477, in ainvoke
+    llm_result = await self.agenerate_prompt(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<8 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1196, in agenerate_prompt
+    return await self.agenerate(
+           ^^^^^^^^^^^^^^^^^^^^^
+        prompt_messages, stop=stop, callbacks=callbacks, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1154, in agenerate
+    raise exceptions[0]
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\language_models\chat_models.py", line 1423, in _agenerate_with_cache
+    result = await self._agenerate(
+             ^^^^^^^^^^^^^^^^^^^^^^
+        messages, stop=stop, run_manager=run_manager, **kwargs
+        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_openai\chat_models\base.py", line 1754, in _agenerate
+    _handle_openai_api_error(e)
+    ~~~~~~~~~~~~~~~~~~~~~~~~^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_openai\chat_models\base.py", line 1747, in _agenerate
+    raw_response = await self.async_client.with_raw_response.create(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+        **payload
+        ^^^^^^^^^
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_legacy_response.py", line 384, in wrapped
+    return cast(LegacyAPIResponse[R], await func(*args, **kwargs))
+                                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\resources\chat\completions\completions.py", line 2714, in create
+    return await self._post(
+           ^^^^^^^^^^^^^^^^^
+    ...<49 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_base_client.py", line 1884, in post
+    return await self.request(cast_to, opts, stream=stream, stream_cls=stream_cls)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\openai\_base_client.py", line 1669, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.InternalServerError: Error code: 500 - {'error': {'message': '<500> InternalError.Algo: An error occurred in model serving, error message is: [There are no suitable clusters.]', 'type': 'BalanceError', 'param': None, 'code': 'BalanceError'}, 'id': 'chatcmpl-78d18c5c-cdd6-969e-a1a0-39e97fe1e2d3', 'request_id': '78d18c5c-cdd6-969e-a1a0-39e97fe1e2d3'}
+2026-04-14 20:34:55,522 - assistant - ERROR - llm_util.py:113 - LLM解析失败: Invalid json output: 
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 
+Traceback (most recent call last):
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\json.py", line 88, in parse_result
+    return parse_json_markdown(text)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 163, in parse_json_markdown
+    return _parse_json(json_str, parser=parser)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 191, in _parse_json
+    return parser(json_str)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\utils\json.py", line 136, in parse_partial_json
+    return json.loads(s, strict=strict)
+           ~~~~~~~~~~^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\__init__.py", line 365, in loads
+    return cls(**kw).decode(s)
+           ~~~~~~~~~~~~~~~~^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\decoder.py", line 345, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+               ~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\json\decoder.py", line 363, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\utils\llm_util.py", line 110, in async_qwen_parse
+    result = await chain.ainvoke({"content": content})
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 3197, in ainvoke
+    input_ = await coro_with_context(part(), context, create_task=True)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 230, in ainvoke
+    return await self._acall_with_config(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<6 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\base.py", line 2111, in _acall_with_config
+    output: Output = await coro_with_context(coro, context)
+                     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\base.py", line 297, in aparse_result
+    return await run_in_executor(None, self.parse_result, result, partial=partial)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 636, in run_in_executor
+    return await asyncio.get_running_loop().run_in_executor(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<2 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\runnables\config.py", line 627, in wrapper
+    return func(*args, **kwargs)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\pydantic.py", line 75, in parse_result
+    json_object = super().parse_result(result)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\langchain_core\output_parsers\json.py", line 91, in parse_result
+    raise OutputParserException(msg, llm_output=text) from e
+langchain_core.exceptions.OutputParserException: Invalid json output: 
+For troubleshooting, visit: https://docs.langchain.com/oss/python/langchain/errors/OUTPUT_PARSING_FAILURE 
+2026-04-14 20:43:19,605 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'missing', 'loc': ('body',), 'msg': 'Field required', 'input': None}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 35, in get_list
+    GET /api/v1/resumes/list
+2026-04-14 20:55:13,960 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 40, in get_list
+    return await get_list_service(query, db)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\services\resume.py", line 243, in get_list_service
+    for item, position_name in data_result["data"]:
+        ^^^^^^^^^^^^^^^^^^^
+TypeError: cannot unpack non-iterable Resume object
+2026-04-14 21:25:44,034 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'missing', 'loc': ('query', 'ids'), 'msg': 'Field required', 'input': None}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 79, in batch_download_resume
+    POST /api/v1/resumes/batch-download
+2026-04-14 21:29:14,442 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'missing', 'loc': ('query', 'ids'), 'msg': 'Field required', 'input': None}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 79, in batch_download_resume
+    POST /api/v1/resumes/batch-download
+2026-04-14 21:29:19,244 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'missing', 'loc': ('query', 'ids'), 'msg': 'Field required', 'input': None}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 79, in batch_download_resume
+    POST /api/v1/resumes/batch-download
+2026-04-14 21:30:29,535 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'missing', 'loc': ('query', 'ids'), 'msg': 'Field required', 'input': None}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\resume.py", line 79, in batch_download_resume
+    GET /api/v1/resumes/batch-download

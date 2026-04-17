@@ -1,0 +1,266 @@
+2026-04-04 15:05:48,121 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\system.py", line 25, in login
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="用户不存在或密码错误")
+fastapi.exceptions.HTTPException: 401: 用户不存在或密码错误
+2026-04-04 15:06:44,576 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\system.py", line 25, in login
+    raise HTTPException(status_code=status.HTTP_401_UNAUTHORIZED, detail="用户不存在或密码错误")
+fastapi.exceptions.HTTPException: 401: 用户不存在或密码错误
+2026-04-04 15:08:59,354 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 355, in app
+    raw_response = await run_endpoint_function(
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<3 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 243, in run_endpoint_function
+    return await dependant.call(**values)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\system.py", line 33, in login
+    return response.success_response("登录成功", response_data)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^
+AttributeError: module 'app.utils.response' has no attribute 'success_response'
+2026-04-04 15:52:30,855 - assistant - ERROR - redis_config.py:54 - 设置缓存失败: value is not an integer or out of range
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\redis_config.py", line 50, in set_cache
+    await redis_client.setex(key, expire, value)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\redis\asyncio\client.py", line 781, in execute_command
+    result = await conn.retry.call_with_retry(
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<5 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\redis\asyncio\retry.py", line 69, in call_with_retry
+    return await do()
+           ^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\redis\asyncio\client.py", line 722, in _send_command_parse_response
+    return await self.parse_response(conn, command_name, **options)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\redis\asyncio\client.py", line 823, in parse_response
+    response = await connection.read_response()
+               ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\redis\asyncio\connection.py", line 762, in read_response
+    raise response from None
+redis.exceptions.ResponseError: value is not an integer or out of range
+2026-04-04 16:18:47,893 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\encoders.py", line 327, in jsonable_encoder
+    data = dict(obj)
+TypeError: 'coroutine' object is not iterable
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\encoders.py", line 332, in jsonable_encoder
+    data = vars(obj)
+TypeError: vars() argument must have __dict__ attribute
+
+The above exception was the direct cause of the following exception:
+
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 377, in app
+    content = await serialize_response(
+              ^^^^^^^^^^^^^^^^^^^^^^^^^
+    ...<10 lines>...
+    )
+    ^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 232, in serialize_response
+    return jsonable_encoder(response_content)
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\encoders.py", line 335, in jsonable_encoder
+    raise ValueError(errors) from e
+ValueError: [TypeError("'coroutine' object is not iterable"), TypeError('vars() argument must have __dict__ attribute')]
+2026-04-04 16:37:36,335 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 19, in get_list
+    GET /api/v1/positions/list
+2026-04-04 16:39:15,333 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 19, in get_list
+    GET /api/v1/positions/list
+2026-04-04 16:57:20,729 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 20, in get_list
+    GET /api/v1/positions/list
+2026-04-04 16:58:13,239 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 20, in get_list
+    GET /api/v1/positions/list
+2026-04-04 17:04:18,396 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 22, in get_list
+    GET /api/v1/positions/list
+2026-04-04 17:04:44,362 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 22, in get_list
+    GET /api/v1/positions/list
+2026-04-04 17:05:53,735 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 22, in get_list
+    GET /api/v1/positions/list
+2026-04-04 17:08:15,985 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 22, in get_list
+    GET /api/v1/positions/list
+2026-04-04 17:08:35,914 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('query', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 22, in get_list
+    GET /api/v1/positions/list
+2026-04-04 17:21:13,128 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('body', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': ''}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 45, in update
+    PUT /api/v1/positions/update
+2026-04-04 17:21:42,304 - assistant - ERROR - db_config.py:31 - 操作出现异常，执行回滚
+Traceback (most recent call last):
+  File "D:\PycharmProjects\hr_assistant_backend\app\core\db_config.py", line 27, in get_db
+    yield session
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 101, in app
+    response = await f(request)
+               ^^^^^^^^^^^^^^^^
+  File "D:\develop\anaconda3\envs\hr_assistant_backend\Lib\site-packages\fastapi\routing.py", line 397, in app
+    raise validation_error
+fastapi.exceptions.RequestValidationError: 1 validation error:
+  {'type': 'int_parsing', 'loc': ('body', 'status'), 'msg': 'Input should be a valid integer, unable to parse string as an integer', 'input': 'None'}
+
+  File "D:\PycharmProjects\hr_assistant_backend\app\api\v1\position.py", line 45, in update
+    PUT /api/v1/positions/update
