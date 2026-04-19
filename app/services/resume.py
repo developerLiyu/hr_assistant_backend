@@ -152,7 +152,11 @@ async def async_parse_service(resume_id: int, db: AsyncSession, parse_data: dict
             await async_update_parse_db(db, resume_id, {"parse_status": 3})
             return ParseResponse(resume_id=resume_id, status=3, message="LLM解析返回空")
 
-        # 2. 拼接向量化文本（原始文本+技能+工作经历+项目经验）
+        # 2. 拼接向量化文本（学历+毕业院校+专业+工作年限+当前职位+技能+工作经历+项目经验）
+        education = parse_data.get("education", "")
+        school = parse_data.get("school", "")
+        major = parse_data.get("major", "")
+        work_years = parse_data.get("work_years", "")
         skills = parse_data.get("skills", [])
         work_exp = parse_data.get("work_experience", [])
         project_exp = parse_data.get("project_experience", [])
@@ -169,10 +173,13 @@ async def async_parse_service(resume_id: int, db: AsyncSession, parse_data: dict
         ])
         # 最终拼接文本
         vector_text = f"""
-            {original_content}
-            技能标签：{" ".join(skills)}
-            工作经历：{work_exp_text}
-            项目经验：{project_exp_text}
+            学历：{education}\n
+            毕业院校：{school}\n
+            专业：{major}\n
+            工作年限：{work_years}\n
+            技能标签：{", ".join(skills)}\n
+            工作经历：{work_exp_text}\n
+            项目经验：{project_exp_text}\n
         """.strip()
 
         # 3. 生成1536维向量
