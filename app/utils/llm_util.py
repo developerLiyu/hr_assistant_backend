@@ -11,6 +11,8 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 
 from app.models.position import JobPosition
+from app.models.resume import Resume
+from app.schemas.interview_question import LLMQuestionItem
 from app.schemas.resume import ResumeParseResult
 from app.schemas.screening import MatchedResume, MatchAnalysis
 from app.utils.logger_handler import logger
@@ -274,5 +276,355 @@ async def async_qwen_get_match_analysis_use_custom(matched_resume: MatchedResume
         logger.error(f"LLM匹配分析失败: {str(e)}", exc_info=True)
         return None
 
+
+# ... existing code ...
+
+from app.models.position import JobPosition
+from app.schemas.interview_question import LLMQuestionResponse
+from app.schemas.resume import ResumeParseResult
+from app.schemas.screening import MatchedResume, MatchAnalysis
+from app.utils.logger_handler import logger
+
+
+
+
+async def async_create_questions_by_position(position_obj: JobPosition, question_types: list[str], difficulty: str,
+                                             count: int, with_answer: bool):
+    """
+    基于岗位信息生成面试题目
+
+    :param position_obj: 岗位对象
+    :param question_types: 题目类型列表（英文：technical/behavioral/situational/open）
+    :param difficulty: 难度等级（英文：junior/middle/senior）
+    :param count: 生成题目数量
+    :param with_answer: 是否生成参考答案
+    :return: LLMQuestionResponse 对象或 None
+    """
+    # 类型映射：英文 -> 中文（用于Prompt展示）
+    type_name_map = {
+        "technical": "技术类",
+        "behavioral": "行为类",
+        "situational": "情景类",
+        "open": "开放类"
+    }
+
+    # 难度映射：英文 -> 中文（用于Prompt展示）
+    difficulty_name_map = {
+        "junior": "初级",
+        "middle": "中级",
+        "senior": "高级"
+    }
+
+    # 转换为中文用于Prompt
+    question_types_cn = [type_name_map.get(t, t) for t in question_types]
+    difficulty_cn = difficulty_name_map.get(difficulty, difficulty)
+
+    # 定义Prompt模板
+    prompt_template = """
+        你是一位资深的技术面试官，请根据以下信息生成面试题目。
+        
+        【目标岗位】
+        岗位名称：{position_name}
+        岗位职责：
+        {job_description}
+        
+        任职要求：
+        {requirements}
+        
+        【生成要求】
+        - 题目类型：{question_types}（可多选：技术类/行为类/情景类/开放类）
+        - 难度等级：{difficulty}（初级/中级/高级）
+        - 题目数量：{count}题
+        - 是否生成参考答案：{with_answer}
+        
+        请按以下JSON格式返回：
+        {{
+            "questions": [
+                {{
+                    "type": "技术类",
+                    "difficulty": "中级",
+                    "question": "题目内容",
+                    "reference_answer": "参考答案（如需要）",
+                    "scoring_points": ["评分要点1", "评分要点2"],
+                    "source": "基于岗位要求"
+                }}
+            ]
+        }}
+        
+        严格遵循以下格式规范：
+        {format_instructions}
+        
+        要求：
+        1. 技术类题目要结合岗位技术栈和任职要求
+        2. 行为类题目要考察候选人的软技能和工作经验
+        3. 题目要有区分度，能考察真实能力
+        4. 参考答案要给出关键点，不要过于冗长
+        5. source字段统一填写为"基于岗位要求"
+    """
+
+    # 初始化解析器和Prompt（使用LLMQuestionResponse解析整个列表）
+    parser = PydanticOutputParser(pydantic_object=LLMQuestionResponse)
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=[
+            "position_name", "job_description", "requirements",
+            "question_types", "difficulty", "count", "with_answer"
+        ],
+        partial_variables={"format_instructions": parser.get_format_instructions()}
+    )
+
+    try:
+        # 创建解析链并执行
+        chain = prompt | create_parse_chain(parser)
+        result = await chain.ainvoke({
+            "position_name": position_obj.position_name,
+            "job_description": position_obj.job_description or "",
+            "requirements": position_obj.requirements or "",
+            "question_types": "、".join(question_types_cn),
+            "difficulty": difficulty_cn,
+            "count": count,
+            "with_answer": "是" if with_answer else "否"
+        })
+        return result
+    except Exception as e:
+        logger.error(f"LLM生成题目失败: {str(e)}", exc_info=True)
+        return None
+
+
+async def async_create_questions_by_resume(resume_obj: Resume, question_types: list[str], difficulty: str,
+                                             count: int, with_answer: bool):
+    """
+    基于基于候选人经历生成面试题目
+
+    :param resume_obj: 简历对象
+    :param question_types: 题目类型列表（英文：technical/behavioral/situational/open）
+    :param difficulty: 难度等级（英文：junior/middle/senior）
+    :param count: 生成题目数量
+    :param with_answer: 是否生成参考答案
+    :return: LLMQuestionResponse 对象或 None
+    """
+    # 类型映射：英文 -> 中文（用于Prompt展示）
+    type_name_map = {
+        "technical": "技术类",
+        "behavioral": "行为类",
+        "situational": "情景类",
+        "open": "开放类"
+    }
+
+    # 难度映射：英文 -> 中文（用于Prompt展示）
+    difficulty_name_map = {
+        "junior": "初级",
+        "middle": "中级",
+        "senior": "高级"
+    }
+
+    # 转换为中文用于Prompt
+    question_types_cn = [type_name_map.get(t, t) for t in question_types]
+    difficulty_cn = difficulty_name_map.get(difficulty, difficulty)
+
+    # 定义Prompt模板
+    prompt_template = """
+        你是一位资深的技术面试官，请根据以下信息生成面试题目。
+
+        【候选人信息】
+        姓名：{candidate_name}
+        学历：{education} - {school} - {major}
+        工作年限：{work_years}年
+        当前职位：{current_position} @ {current_company}
+        技能标签：{skills}
+        工作经历摘要：{work_experience_summary}
+        项目经验摘要：{project_experience_summary}
+
+        【生成要求】
+        - 题目类型：{question_types}（可多选：技术类/行为类/情景类/开放类）
+        - 难度等级：{difficulty}（初级/中级/高级）
+        - 题目数量：{count}题
+        - 是否生成参考答案：{with_answer}
+
+        请按以下JSON格式返回：
+        {{
+            "questions": [
+                {{
+                    "type": "技术类",
+                    "difficulty": "中级",
+                    "question": "题目内容",
+                    "reference_answer": "参考答案（如需要）",
+                    "scoring_points": ["评分要点1", "评分要点2"],
+                    "source": "基于候选人经历"
+                }}
+            ]
+        }}
+
+        严格遵循以下格式规范：
+        {format_instructions}
+
+        要求：
+        1. 技术类题目要结合岗位技术栈和任职要求
+        2. 行为类题目要考察候选人的软技能和工作经验
+        3. 题目要有区分度，能考察真实能力
+        4. 参考答案要给出关键点，不要过于冗长
+        5. source字段统一填写为"基于候选人经历"
+    """
+
+    # 初始化解析器和Prompt（使用LLMQuestionResponse解析整个列表）
+    parser = PydanticOutputParser(pydantic_object=LLMQuestionResponse)
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=[
+            "candidate_name", "education", "school", "major",
+            "work_years", "current_position", "current_company",
+            "skills", "work_experience_summary", "project_experience_summary",
+            "question_types", "difficulty", "count", "with_answer"
+        ],
+        partial_variables={"format_instructions": parser.get_format_instructions()}
+    )
+
+    try:
+        # 创建解析链并执行
+        chain = prompt | create_parse_chain(parser)
+        result = await chain.ainvoke({
+            "candidate_name": resume_obj.candidate_name or "",
+            "education": resume_obj.education or "",
+            "school": resume_obj.school or "",
+            "major": resume_obj.major or "",
+            "work_years": resume_obj.work_years or 0,
+            "current_position": resume_obj.current_position or "",
+            "current_company": resume_obj.current_company or "",
+            "skills": "、".join(resume_obj.skills) if resume_obj.skills else "",
+            "work_experience_summary": resume_obj.work_experience or "",
+            "project_experience_summary": resume_obj.project_experience or "",
+            "question_types": "、".join(question_types_cn),
+            "difficulty": difficulty_cn,
+            "count": count,
+            "with_answer": "是" if with_answer else "否"
+        })
+        return result
+    except Exception as e:
+        logger.error(f"LLM生成题目失败: {str(e)}", exc_info=True)
+        return None
+
+
+
+async def async_create_questions_mixed(position_obj: JobPosition, resume_obj: Resume, question_types: list[str],
+                                       difficulty: str, count: int, with_answer: bool):
+    """
+    基于岗位要求+候选人简历混合模式生成面试题目
+
+    :param position_obj: 岗位对象
+    :param resume_obj: 简历对象
+    :param question_types: 题目类型列表（英文：technical/behavioral/situational/open）
+    :param difficulty: 难度等级（英文：junior/middle/senior）
+    :param count: 生成题目数量
+    :param with_answer: 是否生成参考答案
+    :return: LLMQuestionResponse 对象或 None
+    """
+    # 类型映射：英文 -> 中文（用于Prompt展示）
+    type_name_map = {
+        "technical": "技术类",
+        "behavioral": "行为类",
+        "situational": "情景类",
+        "open": "开放类"
+    }
+
+    # 难度映射：英文 -> 中文（用于Prompt展示）
+    difficulty_name_map = {
+        "junior": "初级",
+        "middle": "中级",
+        "senior": "高级"
+    }
+
+    # 转换为中文用于Prompt
+    question_types_cn = [type_name_map.get(t, t) for t in question_types]
+    difficulty_cn = difficulty_name_map.get(difficulty, difficulty)
+
+    # 定义Prompt模板
+    prompt_template = """
+        你是一位资深的技术面试官，请根据以下信息生成面试题目。
+
+        【目标岗位】
+        岗位名称：{position_name}
+        岗位职责：
+        {job_description}
+
+        任职要求：
+        {requirements}
+
+        【候选人信息】
+        姓名：{candidate_name}
+        学历：{education} - {school} - {major}
+        工作年限：{work_years}年
+        当前职位：{current_position} @ {current_company}
+        技能标签：{skills}
+        工作经历摘要：{work_experience_summary}
+        项目经验摘要：{project_experience_summary}
+
+        【生成要求】
+        - 题目类型：{question_types}（可多选：技术类/行为类/情景类/开放类）
+        - 难度等级：{difficulty}（初级/中级/高级）
+        - 题目数量：{count}题
+        - 是否生成参考答案：{with_answer}
+
+        请按以下JSON格式返回：
+        {{
+            "questions": [
+                {{
+                    "type": "技术类",
+                    "difficulty": "中级",
+                    "question": "题目内容",
+                    "reference_answer": "参考答案（如需要）",
+                    "scoring_points": ["评分要点1", "评分要点2"],
+                    "source": "基于岗位要求+候选人简历"
+                }}
+            ]
+        }}
+
+        要求：
+        1. 技术类题目要结合岗位技术栈和候选人技能
+        2. 行为类题目要基于候选人的工作经历设计
+        3. 题目要有区分度，能考察真实能力
+        4. 参考答案要给出关键点，不要过于冗长
+        5. source字段统一填写为"基于岗位要求+候选人简历"
+    """
+
+    # 初始化解析器和Prompt（使用LLMQuestionResponse解析整个列表）
+    parser = PydanticOutputParser(pydantic_object=LLMQuestionResponse)
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=[
+            "position_name", "job_description", "requirements",
+            "candidate_name", "education", "school", "major",
+            "work_years", "current_position", "current_company",
+            "skills", "work_experience_summary", "project_experience_summary",
+            "question_types", "difficulty", "count", "with_answer"
+        ],
+        partial_variables={"format_instructions": parser.get_format_instructions()}
+    )
+
+    try:
+        # 创建解析链并执行
+        chain = prompt | create_parse_chain(parser)
+        result = await chain.ainvoke({
+            "position_name": position_obj.position_name,
+            "job_description": position_obj.job_description or "",
+            "requirements": position_obj.requirements or "",
+            "candidate_name": resume_obj.candidate_name or "",
+            "education": resume_obj.education or "",
+            "school": resume_obj.school or "",
+            "major": resume_obj.major or "",
+            "work_years": resume_obj.work_years or 0,
+            "current_position": resume_obj.current_position or "",
+            "current_company": resume_obj.current_company or "",
+            "skills": "、".join(resume_obj.skills) if resume_obj.skills else "",
+            "work_experience_summary": resume_obj.work_experience or "",
+            "project_experience_summary": resume_obj.project_experience or "",
+            "question_types": "、".join(question_types_cn),
+            "difficulty": difficulty_cn,
+            "count": count,
+            "with_answer": "是" if with_answer else "否"
+        })
+        return result
+    except Exception as e:
+        logger.error(f"LLM生成题目失败: {str(e)}", exc_info=True)
+        return None
 
 
