@@ -215,7 +215,7 @@ async def generate_questions_service(
 
     try:
         if mode == "position":
-            # TODO: 实现基于岗位要求的题目生成
+            # 实现基于岗位要求的题目生成
             if not request.position_id:
                 return response(code=1002, message="岗位ID不能为空")
 
@@ -229,7 +229,7 @@ async def generate_questions_service(
             })
 
         elif mode == "resume":
-            # TODO: 实现基于候选人经历的题目生成
+            # 实现基于候选人经历的题目生成
             if not request.resume_id:
                 return response(code=1002, message="简历ID不能为空")
 
@@ -243,7 +243,7 @@ async def generate_questions_service(
             })
 
         elif mode == "mixed":
-            # TODO: 实现 基于岗位要求+候选人简历 混合模式题目生成
+            # 实现 基于岗位要求+候选人简历 混合模式题目生成
             if not request.position_id:
                 return response(code=1002, message="岗位ID不能为空")
             if not request.resume_id:
