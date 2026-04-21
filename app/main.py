@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 # 加载环境变量
 load_dotenv()
 
-from app.api.v1 import system, position, resume, screening, interview_question
+from app.api.v1 import system, position, resume, screening, interview_question, recordings
 from app.utils import exception_handlers
 
 app = FastAPI(
@@ -42,5 +42,6 @@ app.include_router(position.router)
 app.include_router(resume.router)
 app.include_router(screening.router)
 app.include_router(interview_question.router)
+app.include_router(recordings.router)
 
 

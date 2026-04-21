@@ -10,6 +10,8 @@ from aiofiles import open as aio_open
 import PyPDF2
 from docx import Document
 
+from app.utils.path_tool import get_abs_path
+
 # 加载配置
 ALLOWED_TYPES = json.loads(os.getenv("ALLOWED_TYPES"))
 MAX_FILE_SIZE = int(os.getenv("MAX_FILE_SIZE"))
@@ -135,4 +137,54 @@ async def async_unzip_file(zip_file: UploadFile) -> list:
         # 注意：不解压后的文件，因为调用方还需要读取
         # 调用方应在使用完毕后自行清理这些临时文件
     return res
+
+
+# =========================================音频文件=========================================
+# 音频文件允许的扩展名和最大大小（字节）
+ALLOWED_AUDIO_TYPES = {
+    "mp3": 200 * 1024 * 1024,  # 200MB
+    "wav": 500 * 1024 * 1024,  # 500MB
+    "m4a": 200 * 1024 * 1024,  # 200MB
+    "aac": 200 * 1024 * 1024,  # 200MB
+}
+
+async def async_validate_audio_file(filename: str, size: int) -> tuple[bool, str]:
+    """异步校验音频文件"""
+    ext = filename.split(".")[-1].lower()
+    if ext not in ALLOWED_AUDIO_TYPES:
+        return False, f"不支持的音频格式：{ext}。支持的格式：{', '.join(ALLOWED_AUDIO_TYPES.keys())}"
+    if size > ALLOWED_AUDIO_TYPES[ext]:
+        max_size_mb = ALLOWED_AUDIO_TYPES[ext] / (1024 * 1024)
+        return False, f"文件超过{max_size_mb}MB限制"
+    return True, "合法"
+
+
+async def async_save_audio_file(file: UploadFile, content: bytes = None) -> tuple[str, str]:
+    """
+    异步保存音频文件
+    :param file: 音频文件
+    :return: tuple(文件相对路径, 文件绝对路径)
+    """
+
+    ext = file.filename.split(".")[-1].lower()
+    audio_dir = os.path.join(datetime.now().strftime("%Y%m%d"), "audio")
+    save_dir = os.path.join(UPLOAD_DIR, audio_dir)
+    os.makedirs(save_dir, exist_ok=True)
+
+    # 生成文件名
+    filename = f"{uuid.uuid4().hex}.{ext}"
+    audio_path = os.path.join(audio_dir, filename)
+    rel_path = os.path.join(UPLOAD_DIR, audio_path)
+    abs_path = get_abs_path(rel_path)
+
+    # 保存文件
+    # 如果已传入content则直接使用，否则读取
+    if content is None:
+        content = await file.read()
+    with open(abs_path, "wb") as f:
+        f.write(content)
+
+    return rel_path, abs_path
+
+# =========================================音频文件=========================================
 

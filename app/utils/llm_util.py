@@ -9,6 +9,7 @@ from langchain_core.runnables import RunnableLambda
 from langchain_openai import ChatOpenAI
 from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
+import dashscope
 
 from app.models.position import JobPosition
 from app.models.resume import Resume
@@ -502,6 +503,153 @@ async def async_create_questions_by_resume(resume_obj: Resume, question_types: l
     except Exception as e:
         logger.error(f"LLM生成题目失败: {str(e)}", exc_info=True)
         return None
+
+
+# ==================== 语音转写相关功能 ====================
+async def async_qwen_asr_transcribe(audio_oss_url: str) -> str:
+    """
+    异步调用 Qwen3-ASR-Flash-Filetrans 进行语音转文字
+    使用 DashScope 异步调用方式，支持最长12小时录音
+    :param audio_oss_url: 音频文件的 OSS 公网 URL（必须公网可访问）
+    :return: 转写后的文字
+    """
+    try:
+        import json
+        import os
+        import sys
+        from http import HTTPStatus
+
+        import dashscope
+        from dashscope.audio.qwen_asr import QwenTranscription
+        from dashscope.api_entities.dashscope_response import TranscriptionResponse
+        import json
+        from urllib import request
+
+        # # 配置 DashScope API Key
+        # dashscope.api_key = DASHSCOPE_API_KEY
+
+        logger.info(f"开始 ASR 转写，音频 URL: {audio_oss_url}")
+
+        # # 新加坡和北京地域的API Key不同。获取API Key：https://help.aliyun.com/zh/model-studio/get-api-key
+        # # 若没有配置环境变量，请用百炼API Key将下行替换为：dashscope.api_key = "sk-xxx"
+        # dashscope.api_key = os.getenv("DASHSCOPE_API_KEY")
+
+        # # 以下为北京地域url，若使用新加坡地域的模型，需将url替换为：https://dashscope-intl.aliyuncs.com/api/v1
+        # dashscope.base_http_api_url = 'https://dashscope.aliyuncs.com/api/v1'
+        task_response = QwenTranscription.async_call(
+            model='qwen3-asr-flash-filetrans',
+            file_url=audio_oss_url,
+            # language="",
+            enable_itn=True, # 是否启用智能数字转换  例：二十五岁 -》 25岁
+            enable_words=False # 是否返回每个单词的识别结果
+            # 例：
+            # {
+            #     "text": "你好世界",
+            #     "words": [
+            #       {"word": "你", "start_time": 0.1, "end_time": 0.2},
+            #       {"word": "好", "start_time": 0.2, "end_time": 0.3},
+            #       {"word": "世", "start_time": 0.4, "end_time": 0.5},
+            #       {"word": "界", "start_time": 0.5, "end_time": 0.6}
+            #     ]
+            #   }
+        )
+
+        logger.info(f'task_response: {task_response}')
+
+        # 检查任务提交是否成功
+        if task_response.status_code != HTTPStatus.OK:
+            logger.error(f"ASR任务提交失败: {task_response.message}")
+            return ""
+
+        # 获取任务ID
+        task_id = task_response.output.task_id
+        logger.info(f"ASR任务提交成功，task_id: {task_id}")
+
+        # task_id = task_response.output.task_id
+
+        # query_response = QwenTranscription.fetch(task=task_response.output.task_id)
+        # logger.info(f'query_response: {query_response}')
+
+
+        transcription_response = QwenTranscription.wait(task=task_id)
+        logger.info(f"任务执行完成，transcription_response={transcription_response}")
+
+
+
+        if transcription_response.output.task_status != "SUCCEEDED":
+            logger.error(f"ASR任务执行失败: {transcription_response.output.message}")
+            return ""
+
+        # 获取文本链接
+        transcription_url = transcription_response.output.result["transcription_url"]
+        logger.info(f"文本链接: {transcription_url}")
+
+        # 请求url得到文本内容
+        response_data = request.urlopen(transcription_url).read().decode('utf-8')
+        json_data = json.loads(response_data)
+        logger.info(f"转写结果：{json_data}")
+
+        # 解析文本内容
+        transcript_parts = []
+        if json_data["transcripts"]:
+            for transcript in json_data["transcripts"]:
+                transcript_parts.append(transcript["text"])
+
+        # 合并所有文本
+        full_transcript = "".join(transcript_parts)
+        logger.info(f"ASR转写成功，文本长度: {len(full_transcript)}")
+
+        return full_transcript
+
+    except Exception as e:
+        logger.error(f"ASR转写异常: {str(e)}", exc_info=True)
+        return ""
+
+
+
+async def async_qwen_polish_transcript(transcript: str) -> str:
+    """
+    使用LLM对转写文字稿进行后处理（添加标点/分段/润色）
+    :param transcript: 原始识别文字
+    :return: 处理后的文字稿
+    """
+    if not transcript.strip():
+        return transcript
+
+    prompt_template = """
+        请对以下语音识别的文字稿进行整理和润色：
+
+        【要求】
+        1. 添加合适的标点符号
+        2. 合理分段，保持语义连贯
+        3. 修正明显的识别错误
+        4. 保持原文意思不变，不要添加或删除内容
+        5. 区分面试官和候选人的对话（如果有明显的对话结构），并在完整的句子前面添加对话人物名称
+        例如：
+        面试官：你好，过来面试是吧？简单说下，你会Java不？
+        候选人：会的会的，我做了一年多Java开发了，基础的都没问题
+
+        【原始文字稿】
+        {transcript}
+
+        请直接返回整理后的文字稿，不要添加任何额外说明。
+    """
+
+    llm = get_llm_instance()
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=["transcript"]
+    )
+
+    try:
+        chain = prompt | RunnableLambda(print_prompt) | llm | RunnableLambda(print_llm_response)
+        result = await chain.ainvoke({"transcript": transcript})
+        return result.content
+    except Exception as e:
+        logger.error(f"文字稿润色失败: {str(e)}", exc_info=True)
+        return transcript
+
+# ==================== 语音转写相关功能 ====================
 
 
 
