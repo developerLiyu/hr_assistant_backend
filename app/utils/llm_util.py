@@ -14,6 +14,7 @@ import dashscope
 from app.models.position import JobPosition
 from app.models.resume import Resume
 from app.schemas.interview_question import LLMQuestionItem
+from app.schemas.interview_summary import InterviewSummaryResponse
 from app.schemas.resume import ResumeParseResult
 from app.schemas.screening import MatchedResume, MatchAnalysis
 from app.utils.logger_handler import logger
@@ -775,4 +776,179 @@ async def async_create_questions_mixed(position_obj: JobPosition, resume_obj: Re
         logger.error(f"LLM生成题目失败: {str(e)}", exc_info=True)
         return None
 
+
+async def generate_interview_summary_by_recording(duration: int, candidate_name: str, position_name: str, transcript: str) -> InterviewSummaryResponse | None:
+    """
+    通过录音转写文件提取面试摘要信息
+    :param duration:
+    :param candidate_name:
+    :param position_name:
+    :param transcript:
+    :return:
+    """
+
+    # 定义Prompt模板
+    prompt_template = """
+        你是一位专业的HR助手，请从以下面试记录中提取结构化摘要。
+        
+        【面试信息】
+        候选人：{candidate_name}
+        应聘岗位：{position_name}
+        面试时长：{duration}分钟
+        
+        【面试文字稿】
+        {transcript}
+        
+        请按以下JSON格式返回摘要：
+        {{
+            "summary_overview": "面试整体概述（150-200字，包含面试氛围、候选人整体表现等）",
+        
+            "key_qa": [
+                {{
+                    "question": "面试官提出的重要问题",
+                    "answer_summary": "候选人回答的要点概述（100字以内）",
+                    "answer_quality": "优秀/良好/一般/较差"
+                }}
+            ],
+        
+            "technical_skills": ["技术能力标签1", "技术能力标签2"],
+        
+            "soft_skills": ["软技能标签1", "软技能标签2"],
+        
+            "highlights": [
+                "亮点1：具体描述",
+                "亮点2：具体描述"
+            ],
+        
+            "concerns": [
+                "疑虑1：具体描述",
+                "疑虑2：具体描述"
+            ],
+        
+            "candidate_questions": [
+                "候选人提出的问题1",
+                "候选人提出的问题2"
+            ]
+        }}
+        
+        严格遵循以下格式规范：
+        {format_instructions}
+        
+        提取要求：
+        1. 核心问答选择最能体现候选人能力的3-5个问题
+        2. 技术能力标签要具体，如"微服务架构"而非"技术能力强"
+        3. 亮点和疑虑要有具体事例支撑
+        4. 回答质量判断要基于回答的完整性、逻辑性、专业性
+    """
+
+    # 初始化解析器和Prompt（使用InterviewSummaryResponse解析模型回答内容）
+    parser = PydanticOutputParser(pydantic_object=InterviewSummaryResponse)
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=[
+            "candidate_name", "position_name", "duration", "transcript"
+        ],
+        partial_variables={"format_instructions": parser.get_format_instructions()}
+    )
+
+    try:
+        # 创建解析链并执行
+        chain = prompt | create_parse_chain(parser)
+        result = await chain.ainvoke({
+            "candidate_name": candidate_name,
+            "position_name": position_name,
+            "duration": duration,
+            "transcript": transcript
+        })
+        return result
+    except Exception as e:
+        logger.error(f"LLM生成面试摘要失败: {str(e)}", exc_info=True)
+        return None
+
+
+async def generate_interview_summary_by_summary_info(duration: int, candidate_name: str, position_name: str, all_summary_info: str) -> InterviewSummaryResponse | None:
+    """
+    通过多条摘要信息，生成汇总摘要信息
+    :param all_summary_info:
+    :return:
+    """
+
+    # 定义Prompt模板
+    prompt_template = """
+        你是一位专业的HR助手，请从多条面试摘要信息中，汇总出最终摘要信息。
+
+        【面试信息】
+        候选人：{candidate_name}
+        应聘岗位：{position_name}
+        面试时长：{duration}分钟
+
+        【多条面试摘要信息】
+        {all_summary_info}
+
+        请按以下JSON格式返回汇总摘要信息：
+        {{
+            "summary_overview": "面试整体概述（150-200字，包含面试氛围、候选人整体表现等）",
+
+            "key_qa": [
+                {{
+                    "question": "面试官提出的重要问题",
+                    "answer_summary": "候选人回答的要点概述（100字以内）",
+                    "answer_quality": "优秀/良好/一般/较差"
+                }}
+            ],
+
+            "technical_skills": ["技术能力标签1", "技术能力标签2"],
+
+            "soft_skills": ["软技能标签1", "软技能标签2"],
+
+            "highlights": [
+                "亮点1：具体描述",
+                "亮点2：具体描述"
+            ],
+
+            "concerns": [
+                "疑虑1：具体描述",
+                "疑虑2：具体描述"
+            ],
+
+            "candidate_questions": [
+                "候选人提出的问题1",
+                "候选人提出的问题2"
+            ]
+        }}
+
+        严格遵循以下格式规范：
+        {format_instructions}
+
+        提取要求：
+        1. 核心问答（key_qa）选择最能体现候选人能力的3-5个问题
+        2. 技术能力标签要具体，如"微服务架构"而非"技术能力强"
+        3. 亮点和疑虑要有具体事例支撑
+        4. 回答质量判断要基于回答的完整性、逻辑性、专业性
+        5. 每个键的内容不要单纯的叠加，要再进行分析，选出更符合的面试摘要信息
+    """
+
+    # 初始化解析器和Prompt（使用InterviewSummaryResponse解析模型回答内容）
+    parser = PydanticOutputParser(pydantic_object=InterviewSummaryResponse)
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=[
+            "candidate_name", "position_name", "duration", "all_summary_info"
+        ],
+        partial_variables={"format_instructions": parser.get_format_instructions()}
+    )
+
+    try:
+        # 创建解析链并执行
+        chain = prompt | create_parse_chain(parser)
+        result = await chain.ainvoke({
+            "candidate_name": candidate_name,
+            "position_name": position_name,
+            "duration": duration,
+            "all_summary_info": all_summary_info
+        })
+        return result
+    except Exception as e:
+        logger.error(f"LLM生成汇总面试摘要失败: {str(e)}", exc_info=True)
+        return None
 

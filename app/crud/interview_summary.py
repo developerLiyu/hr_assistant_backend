@@ -1,49 +1,48 @@
-from typing import Optional, List, Tuple
+from typing import Optional, List
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import func
 
-from app.models.position import JobPosition
+from app.models.interview_summary import InterviewSummary
 from app.models.recording import InterviewRecording
-from app.models.resume import Resume
 from app.schemas.recording import RecordingListQuery
 
 
-async def async_create_recording_db(db: AsyncSession, data: dict) -> InterviewRecording:
-    """异步创建录音记录"""
-    obj = InterviewRecording(**data)
+
+
+async def async_create_interview_summary_db(db: AsyncSession, data: dict) -> InterviewSummary:
+    """异步创建面试摘要"""
+    obj = InterviewSummary(**data)
     db.add(obj)
     await db.commit()
     await db.refresh(obj)
     return obj
 
 
-async def async_get_recording_by_id_db(db: AsyncSession, recording_id: int) -> Optional[InterviewRecording]:
-    """异步根据ID查询录音"""
-    res = await db.execute(select(InterviewRecording).where(InterviewRecording.id == recording_id))
+async def async_get_interview_summary_by_recording_id_db(db: AsyncSession, recording_id: int) -> Optional[InterviewSummary]:
+    """异步根据录音ID查询面试摘要信息"""
+    res = await db.execute(select(InterviewSummary).where(InterviewSummary.recording_id == recording_id))
     return res.scalar_one_or_none()
 
 
-async def async_get_recording_info_by_id_db(db: AsyncSession, recording_id: int) -> Optional[Tuple[InterviewRecording, Optional[str], Optional[str]]]:
-    """异步根据ID查询录音"""
-    select_sql = (select(InterviewRecording, Resume.candidate_name, JobPosition.position_name)
-                  .outerjoin(Resume, Resume.id == InterviewRecording.resume_id)
-                  .outerjoin(JobPosition, JobPosition.id == InterviewRecording.position_id)
-                  .where(InterviewRecording.id == recording_id)
-                  )
-
-    res = await db.execute(select_sql)
-    return res.one_or_none()
+async def async_get_interview_summary_by_id_db(db: AsyncSession, id: int) -> Optional[InterviewSummary]:
+    res = await db.execute(select(InterviewSummary).where(InterviewSummary.id == id))
+    return res.scalar_one_or_none()
 
 
-async def async_update_recording_db(db: AsyncSession, recording_id: int, data: dict):
-    """异步更新录音数据"""
-    obj = await async_get_recording_by_id_db(db, recording_id)
+async def async_update_interview_summary_by_id_db(db: AsyncSession, id: int, data: dict):
+    """异步更新面试摘要数据"""
+    obj = await async_get_interview_summary_by_id_db(db, id)
     if not obj:
         return
+
+   # 更新数据
     for k, v in data.items():
         setattr(obj, k, v)
+
     await db.commit()
+    await db.refresh(obj)
+    return obj
 
 
 async def async_get_recording_list_db(query: RecordingListQuery, db: AsyncSession):
