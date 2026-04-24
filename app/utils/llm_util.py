@@ -11,8 +11,10 @@ from langchain_core.prompts import PromptTemplate
 from langchain_core.output_parsers import PydanticOutputParser
 import dashscope
 
+from app.models.interview_summary import InterviewSummary
 from app.models.position import JobPosition
 from app.models.resume import Resume
+from app.schemas.interview_evaluation import InterviewEvaluationResponse
 from app.schemas.interview_question import LLMQuestionItem
 from app.schemas.interview_summary import InterviewSummaryResponse
 from app.schemas.resume import ResumeParseResult
@@ -951,4 +953,185 @@ async def generate_interview_summary_by_summary_info(duration: int, candidate_na
     except Exception as e:
         logger.error(f"LLM生成汇总面试摘要失败: {str(e)}", exc_info=True)
         return None
+
+
+async def async_generate_interview_evaluation(candidate_name: str, position_name: str, requirements: str,
+                                           interview_summary: InterviewSummary) -> InterviewEvaluationResponse | None:
+    # 处理面试摘要中的JSON字段
+    import json as json_module
+
+    # 解析key_qa为文本格式
+    key_qa_text = ""
+    if interview_summary.key_qa:
+        key_qa_list = interview_summary.key_qa
+        if isinstance(key_qa_list, str):
+            try:
+                key_qa_list = json_module.loads(key_qa_list)
+            except:
+                key_qa_list = []
+
+        qa_items = []
+        for idx, qa in enumerate(key_qa_list, 1):
+            if isinstance(qa, dict):
+                qa_items.append(
+                    f"{idx}. 问题：{qa.get('question', '')}\n"
+                    f"   回答：{qa.get('answer_summary', '')}\n"
+                    f"   质量：{qa.get('answer_quality', '')}"
+                )
+        key_qa_text = "\n".join(qa_items) if qa_items else "无"
+
+    # 处理技术能力标签
+    technical_skills = interview_summary.technical_skills
+    if isinstance(technical_skills, str):
+        try:
+            technical_skills = json_module.loads(technical_skills)
+        except:
+            technical_skills = []
+    technical_skills_str = "、".join(technical_skills) if technical_skills else "无"
+
+    # 处理软技能标签
+    soft_skills = interview_summary.soft_skills
+    if isinstance(soft_skills, str):
+        try:
+            soft_skills = json_module.loads(soft_skills)
+        except:
+            soft_skills = []
+    soft_skills_str = "、".join(soft_skills) if soft_skills else "无"
+
+    # 处理亮点
+    highlights = interview_summary.highlights
+    if isinstance(highlights, str):
+        try:
+            highlights = json_module.loads(highlights)
+        except:
+            highlights = []
+    highlights_str = "；".join(highlights) if highlights else "无"
+
+    # 处理疑虑
+    concerns = interview_summary.concerns
+    if isinstance(concerns, str):
+        try:
+            concerns = json_module.loads(concerns)
+        except:
+            concerns = []
+    concerns_str = "；".join(concerns) if concerns else "无"
+
+    # 创建提示词信息
+    prompt_template = """
+        你是一位资深的HR评估专家，请根据以下面试摘要对候选人进行多维度评价。
+
+        【基本信息】
+        候选人：{candidate_name}
+        应聘岗位：{position_name}
+        岗位要求：{requirements}
+
+        【面试摘要】
+        面试概要：{summary_overview}
+
+        核心问答表现：
+        {key_qa_text}
+
+        能力标签：
+        - 技术能力：{technical_skills}
+        - 软技能：{soft_skills}
+
+        亮点：{highlights}
+        疑虑：{concerns}
+
+        请按以下JSON格式返回评价结果：
+        {{
+            "professional_score": 85,
+            "professional_comment": "对专业能力的具体评价（50字以内）",
+            "logic_score": 90,
+            "logic_comment": "对逻辑思维的具体评价（50字以内）",
+            "communication_score": 80,
+            "communication_comment": "对沟通表达的具体评价（50字以内）",
+            "learning_score": 88,
+            "learning_comment": "对学习能力的具体评价（50字以内）",
+            "teamwork_score": 82,
+            "teamwork_comment": "对团队协作的具体评价（50字以内）",
+            "culture_score": 78,
+            "culture_comment": "对文化匹配的具体评价（50字以内）",
+            "total_score": 84.7,
+            "recommendation": "推荐",
+            "ai_comment": "AI综合评语（200-300字，包含优势、不足、发展建议）",
+            "key_strengths": ["核心优势1", "核心优势2"],
+            "improvement_areas": ["待提升领域1", "待提升领域2"],
+            "hiring_suggestion": "录用建议和理由（100字）"
+        }}
+
+        严格遵循以下格式规范：
+        {format_instructions}
+
+        评分标准：
+        - 90-100：表现优秀，明显超出期望
+        - 75-89：表现良好，符合期望
+        - 60-74：表现一般，勉强达到要求
+        - 0-59：表现较差，未达到要求
+
+        各维度权重及考察内容：
+        - 专业能力（30%）：岗位相关的专业知识和技能，考察技术深度、广度、实战经验
+        - 逻辑思维（20%）：分析和解决问题的逻辑性，考察问题分析、方案设计、推理能力
+        - 沟通表达（15%）：语言表达和沟通技巧，考察表达清晰度、听众意识、反馈能力
+        - 学习能力（15%）：学习新知识的能力和意愿，考察学习方法、新技术跟进、自我提升
+        - 团队协作（10%）：团队合作意识和经验，考察协作案例、冲突处理、角色定位
+        - 文化匹配（10%）：与企业文化的契合度，考察价值观、工作风格、职业目标
+
+        综合得分计算规则：
+        综合得分 = Σ(各维度得分 × 权重)
+        计算公式：professional_score×0.30 + logic_score×0.20 + communication_score×0.15 + learning_score×0.15 + teamwork_score×0.10 + culture_score×0.10
+
+        示例：
+        85×0.30 + 90×0.20 + 80×0.15 + 88×0.15 + 82×0.10 + 78×0.10
+        = 25.5 + 18 + 12 + 13.2 + 8.2 + 7.8
+        = 84.7分
+
+        推荐等级可选值：强烈推荐、推荐、一般、不推荐
+        推荐等级判断参考：
+        - 90分以上：强烈推荐
+        - 75-89分：推荐
+        - 60-74分：一般
+        - 60分以下：不推荐
+
+        请基于面试表现客观评分，不要过于宽松或苛刻。
+        所有评分字段必须是整数（0-100），total_score可以是小数（保留2位小数）。
+        各维度评语控制在50字以内。
+        务必按照权重公式准确计算综合得分。
+    """
+
+    # 创建解析器
+    parser = PydanticOutputParser(pydantic_object=InterviewEvaluationResponse)
+
+    # 创建提示词
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=[
+            "candidate_name", "position_name", "requirements",
+            "summary_overview", "key_qa_text", "technical_skills",
+            "soft_skills", "highlights", "concerns"
+        ],
+        partial_variables={"format_instructions": parser.get_format_instructions()}
+    )
+
+    # 创建解析链并执行
+    chain = prompt | create_parse_chain(parser)
+
+    try:
+        result = await chain.ainvoke({
+            "candidate_name": candidate_name,
+            "position_name": position_name,
+            "requirements": requirements,
+            "summary_overview": interview_summary.summary_overview,
+            "key_qa_text": key_qa_text,
+            "technical_skills": technical_skills_str,
+            "soft_skills": soft_skills_str,
+            "highlights": highlights_str,
+            "concerns": concerns_str
+        })
+        return result
+
+    except Exception as e:
+        logger.error(f"LLM生成面试评价失败: {str(e)}", exc_info=True)
+        return None
+
 

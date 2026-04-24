@@ -1,4 +1,4 @@
-from typing import Optional, List, Tuple
+from typing import Optional, List, Tuple, Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import func
@@ -95,3 +95,17 @@ async def async_delete_recording_db(db: AsyncSession, recording_id: int):
     await db.delete(obj)
     await db.commit()
     return True
+
+
+async def async_get_recording_list_db_by_resume_id(resume_id: int, db: AsyncSession) -> Sequence[InterviewRecording]:
+    """
+    查询录音列表
+    :param query:
+    :param db:
+    :return:
+    """
+    query_sql = select(InterviewRecording).where(InterviewRecording.resume_id == resume_id)
+    result = await db.execute(query_sql)
+
+    return result.scalars().all()
+

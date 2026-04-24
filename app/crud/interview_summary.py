@@ -86,11 +86,11 @@ async def async_get_recording_list_db(query: RecordingListQuery, db: AsyncSessio
     }
 
 
-async def async_delete_recording_db(db: AsyncSession, recording_id: int):
-    """异步删除录音记录"""
-    obj = await async_get_recording_by_id_db(db, recording_id)
-    if not obj:
-        return False
-    await db.delete(obj)
-    await db.commit()
-    return True
+# async def async_delete_recording_db(db: AsyncSession, recording_id: int):
+#     """异步删除录音记录"""
+#     obj = await async_get_recording_by_id_db(db, recording_id)
+#     if not obj:
+#         return False
+#     await db.delete(obj)
+#     await db.commit()
+#     return True

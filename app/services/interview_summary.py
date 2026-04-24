@@ -51,7 +51,7 @@ async def generate_service(recording_id: int, db: AsyncSession, id: int = None) 
 
         # 汇总所有面试摘要
         all_summary_info = "\n\n".join(
-            # mode="json"和exclude_none=True：转换成JSON格式的字符串，并格式化输出，排除值为None的字段
+            # mode="json"和exclude_none=True：转换成JSON对象（即字典），并格式化输出，排除值为None的字段
             # indent=4和ensure_ascii=False：格式化输出（缩进4个字符），并确保字符编码为UTF-8（即可以有中文字符）
             [f"【分段摘要{index+1}】\n{json.dumps(summary_response.model_dump(mode="json", exclude_none=True), indent=4, ensure_ascii=False)}"
              for index, summary_response in enumerate(summary_response_arr)
