@@ -8,7 +8,7 @@ from dotenv import load_dotenv
 load_dotenv()
 
 from app.api.v1 import system, position, resume, screening, interview_question, recordings, interview_summary, \
-    interview_evaluation
+    interview_evaluation, candidate_comparison
 from app.utils import exception_handlers
 
 app = FastAPI(
@@ -46,5 +46,6 @@ app.include_router(interview_question.router)
 app.include_router(recordings.router)
 app.include_router(interview_summary.router)
 app.include_router(interview_evaluation.router)
+app.include_router(candidate_comparison.router)
 
 

@@ -14,6 +14,7 @@ import dashscope
 from app.models.interview_summary import InterviewSummary
 from app.models.position import JobPosition
 from app.models.resume import Resume
+from app.schemas.candidate_comparison import CandidateComparisonResponse, CandidateComparisonAIAnalysis
 from app.schemas.interview_evaluation import InterviewEvaluationResponse
 from app.schemas.interview_question import LLMQuestionItem
 from app.schemas.interview_summary import InterviewSummaryResponse
@@ -1133,5 +1134,113 @@ async def async_generate_interview_evaluation(candidate_name: str, position_name
     except Exception as e:
         logger.error(f"LLM生成面试评价失败: {str(e)}", exc_info=True)
         return None
+
+
+async def async_generate_comparison_ai_analysis(position_obj: JobPosition, comparison_data_obj: list[
+    dict]) -> CandidateComparisonAIAnalysis | None:
+    # 获取候选人信息
+    all_candidate_info_arr = []
+    for index, candidate in enumerate(comparison_data_obj):
+        evaluation = candidate.get("evaluation", {})
+
+        # 安全获取列表字段
+        skills = candidate.get("skills") or []
+        highlights = candidate.get("highlights") or []
+        concerns = candidate.get("concerns") or []
+
+        one_candidate_info = f"""
+                候选人{index + 1} - {candidate.get("name", "未知")}：
+                - 学历：{candidate.get("education", "未知")} - {candidate.get("school", "未知")}
+                - 工作年限：{candidate.get("work_years", 0)}年
+                - 当前职位：{candidate.get("current_position", "未知")} @ {candidate.get("current_company", "未知")}
+                - 技能：{"、".join(skills) if skills else "无"}
+                - 面试评分：专业{evaluation.get("professional_score", 0)}分、逻辑{evaluation.get("logic_score", 0)}分、沟通{evaluation.get("communication_score", 0)}分、学习{evaluation.get("learning_score", 0)}分、团队{evaluation.get("teamwork_score", 0)}分、文化{evaluation.get("culture_score", 0)}分
+                - 综合得分：{evaluation.get("total_score", 0)}分
+                - 面试亮点：{"、".join(highlights) if highlights else "无"}
+                - 面试疑虑：{"、".join(concerns) if concerns else "无"}
+            """
+        all_candidate_info_arr.append(one_candidate_info)
+
+    all_candidate_info = "\n".join(all_candidate_info_arr)
+
+    # 获取岗位信息
+    position_name = position_obj.position_name
+    requirements = position_obj.requirements
+
+    prompt_template = """
+        你是一位资深的招聘顾问，请对以下候选人进行对比分析。
+
+        【目标岗位】
+        岗位名称：{position_name}
+        核心要求：{requirements}
+
+        【候选人信息】
+
+        {all_candidate_info}
+
+        请按以下JSON格式返回对比分析：
+        {{
+            "comparison_summary": "对比总结（200字，概述各候选人的整体情况和差异）",
+
+            "candidate_analysis": [
+                {{
+                    "name": "候选人A姓名",
+                    "advantages_over_others": ["相比其他候选人的优势1", "优势2"],
+                    "disadvantages": ["相比其他候选人的劣势1"],
+                    "suitable_scenarios": "最适合的场景（如急需上岗、长期培养等）",
+                    "risk_points": "录用风险点"
+                }}
+            ],
+
+            "ranking": [
+                {{
+                    "rank": 1,
+                    "name": "候选人姓名",
+                    "score": 综合推荐分,
+                    "reason": "排名第一的理由（50字）"
+                }}
+            ],
+
+            "recommendation": {{
+                "best_choice": "最佳人选姓名",
+                "reason": "推荐理由（100字）",
+                "alternative": "备选人选姓名",
+                "alternative_reason": "备选理由"
+            }},
+
+            "hiring_advice": "最终录用建议（150字，包含决策建议和注意事项）"
+        }}
+
+        严格遵循以下格式规范：
+        {format_instructions}
+
+        分析要求：
+        1. 客观公正，基于数据和面试表现
+        2. 突出每个候选人的差异化优势
+        3. 考虑岗位需求的匹配度
+        4. 给出明确的排名和推荐
+    """
+    parser = PydanticOutputParser(pydantic_object=CandidateComparisonAIAnalysis)
+    prompt = PromptTemplate(
+        template=prompt_template,
+        input_variables=[
+            "position_name", "requirements", "all_candidate_info"
+        ],
+        partial_variables={"format_instructions": parser.get_format_instructions()}
+    )
+
+    chain = prompt | create_parse_chain(parser)
+
+    try:
+        result = await chain.ainvoke({
+            "position_name": position_name,
+            "requirements": requirements,
+            "all_candidate_info": all_candidate_info
+        })
+        return result
+    except Exception as e:
+        logger.error(f"LLM生成候选人对比分析失败: {str(e)}", exc_info=True)
+        return None
+
 
 

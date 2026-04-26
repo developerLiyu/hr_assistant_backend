@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional, List, Sequence
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.future import select
 from sqlalchemy import func
@@ -94,3 +94,34 @@ async def async_get_recording_list_db(query: RecordingListQuery, db: AsyncSessio
 #     await db.delete(obj)
 #     await db.commit()
 #     return True
+
+
+
+async def async_get_interview_summary_list_db_by_resume_ids(resume_ids: list[int], db: AsyncSession) -> Sequence[InterviewSummary] | None:
+    """
+    根据resume_ids条件，查询所有面试评价记录（多个resume_id对应的记录）。
+    并且保证每个resume_id只有一条记录（最新的created_at时间的记录）
+    :param resume_ids:
+    :param db:
+    :return:
+    """
+    subquery = (
+        select(InterviewSummary.resume_id, func.max(InterviewSummary.created_at).label("created_at"))
+        .where(InterviewSummary.resume_id.in_(resume_ids))
+        .group_by(InterviewSummary.resume_id)
+        .subquery()
+    )
+
+    # join：表示内连接
+    # .c：表示columns的缩写
+    select_sql = (
+        select(InterviewSummary)
+        .join(
+            subquery,
+            (InterviewSummary.resume_id == subquery.c.resume_id) &
+            (InterviewSummary.created_at == subquery.c.created_at)
+        ).order_by(InterviewSummary.resume_id)
+    )
+    result = await db.execute(select_sql)
+
+    return result.scalars().all()
