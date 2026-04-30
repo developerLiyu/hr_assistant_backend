@@ -8,6 +8,7 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from fastapi import UploadFile
 from starlette.responses import JSONResponse, FileResponse, StreamingResponse
 
+from app.crud import position
 from app.crud.resume import (
     async_create_resume_db,
     async_get_resume_by_id_db,
@@ -272,8 +273,19 @@ async def get_detail_service(resume_id: int, db: AsyncSession) -> JSONResponse:
     if not data_result:
         return response(code=1002, message="数据不存在")
 
-    # 处理简历详情数据
-    resume = ResumeDetailResponse.model_validate(data_result)
+    # data_result 是 Row 对象 (Resume, position_name)，需要解包
+    resume_orm, position_name = data_result
+
+    # 利用 from_attributes 将 ORM 对象转换为 Pydantic 模型
+    resume = ResumeDetailResponse.model_validate(resume_orm)
+
+    # 手动设置联表字段（因为 position_name 不在 Resume ORM 模型中）
+    resume.position_name = position_name
+
+    # # 获取岗位信息
+    # position_orm = await position.get_position_by_id(resume.position_id, db)
+    # resume.position_name = position_orm.position_name if position_orm else ""
+
     resume.phone = f"{resume.phone[:3]}****{resume.phone[-4:]}"
     resume.position = {
         "id": resume.position_id,

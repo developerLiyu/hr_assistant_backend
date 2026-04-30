@@ -74,9 +74,9 @@ async def update(request_data: PositionCreate, db: AsyncSession):
     :return:
     """
     # 校验岗位是否存在
-    position_orm = await position.get_position_by_name_and_department(request_data.position_name, request_data.department, db)
-    if position_orm:
-        return response(code=1003, message="岗位已存在")
+    # position_orm = await position.get_position_by_name_and_department(request_data.position_name, request_data.department, db)
+    # if position_orm:
+    #     return response(code=1003, message="岗位已存在")
 
     # 不存在，则更新岗位
     position_orm = await position.update_data(request_data, db)

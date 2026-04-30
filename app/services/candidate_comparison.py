@@ -180,6 +180,7 @@ async def get_history_comparison_list_service(position_id: int, page: int, page_
 import os
 import tempfile
 from datetime import datetime
+from starlette.responses import FileResponse
 from reportlab.lib.pagesizes import A4
 from reportlab.lib import colors
 from reportlab.lib.styles import ParagraphStyle
@@ -225,10 +226,15 @@ async def export_comparison_pdf_service(id: int, db: AsyncSession):
             created_at=comparison_orm.created_at
         )
 
-        return response(
-            code=0,
-            message="PDF导出成功",
-            data={"pdf_path": pdf_path, "file_name": os.path.basename(pdf_path)}
+        if not pdf_path or not os.path.isfile(pdf_path):
+            return response(code=500, message="PDF文件生成失败", data=None)
+
+        # 浏览器下载需要 HTTP 文件流，不能仅返回服务器本地绝对路径
+        fname = os.path.basename(pdf_path)
+        return FileResponse(
+            path=pdf_path,
+            filename=fname,
+            media_type="application/pdf",
         )
 
     except Exception as e:

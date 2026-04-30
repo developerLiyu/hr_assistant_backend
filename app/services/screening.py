@@ -30,7 +30,7 @@ async def resume_match_by_position_service(request: ScreeningMatchRequest, db: A
     # 将岗位要求信息进行向量化
     yaoqiu_message_embedding: List[float] = await milvus_util.async_generate_embedding(yaoqiu_message)
 
-    # 在简历向量库中进行搜索，找到匹配的岗位信息[{"resume_id": 简历id, "similarity": 相似度（保留4位小数）}]
+    # 在简历向量库中进行搜索，找到匹配的简历信息[{"resume_id": 简历id, "similarity": 相似度（保留4位小数）}]
     resume_info_list: List[dict] = await milvus_util.async_search_embedding(yaoqiu_message_embedding, top_n)
 
     # 根据简历id信息，获取简历信息

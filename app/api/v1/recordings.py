@@ -129,7 +129,7 @@ async def get_transcript(
 @router.put("/{id}/transcript", summary="更新文字稿")
 async def update_transcript(
     id: int = Path(..., description="录音ID"),
-    transcript: str = Query(..., description="文字稿内容"),
+    transcript: str = Form(..., description="文字稿内容"),
     db: AsyncSession = Depends(get_db)
 ):
     """编辑文字稿"""

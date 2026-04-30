@@ -31,10 +31,10 @@ class PositionInfo(BaseModel):
 
 class MatchAnalysis(BaseModel):
     """匹配分析详情"""
-    match_advantages: List[str] = []
-    match_weaknesses: List[str] = []
-    overall_comment: Optional[str] = None
-    interview_suggestions: List[str] = []
+    match_advantages: List[str] = [] #  匹配优势
+    match_weaknesses: List[str] = [] #  匹配劣势
+    overall_comment: Optional[str] = None # 匹配综合评语
+    interview_suggestions: List[str] = [] # 面试建议
 
 
 class MatchedResume(BaseModel):

@@ -19,6 +19,12 @@ async def async_get_interview_evaluation_by_id_db(db: AsyncSession, id: int) -> 
 
     return result.scalar_one_or_none()
 
+async def async_get_interview_evaluation_list(db: AsyncSession) -> list[InterviewEvaluation] | None:
+    select_sql = select(InterviewEvaluation)
+    result = await db.execute(select_sql)
+
+    return result.scalars().all()
+
 
 async def async_update_interview_evaluation_by_id_db(db: AsyncSession, id: int, update_data: dict):
     obj = await async_get_interview_evaluation_by_id_db(db, id)

@@ -123,5 +123,5 @@ async def async_get_resume_detail_db(id: int, db: AsyncSession):
                 .outerjoin(JobPosition, JobPosition.id == Resume.position_id)
                 .where(Resume.id == id, Resume.is_deleted == 0))
     result = await db.execute(base_sql)
-    return result.scalar_one_or_none()
+    return result.one_or_none()
 

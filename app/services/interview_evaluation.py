@@ -60,6 +60,20 @@ async def get_interview_evaluation_detail(id: int, db: AsyncSession) -> JSONResp
         return response(code=500, message="获取面试评价详情失败")
 
 
+async def get_interview_evaluation_list(db: AsyncSession) -> JSONResponse | None:
+    try:
+        # 获取面试评价信息
+        interview_evaluation_orm_list = await interview_evaluation.async_get_interview_evaluation_list(db)
+
+        data = [InterviewEvaluationResponse.model_validate(item) for item in interview_evaluation_orm_list]
+
+        return response(code=0, message="success", data=data)
+
+    except Exception as e:
+        logging.error(f"获取面试评价列表失败：{e}", exc_info=True)
+        return response(code=500, message="获取面试评价列表失败")
+
+
 async def update_interview_evaluation(id: int, request: InterviewEvaluationRequest, db: AsyncSession):
     try:
         # 获取面试评价信息

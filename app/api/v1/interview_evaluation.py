@@ -21,6 +21,17 @@ async def generate(
         db=db
     )
 
+@router.get("/list", summary="获取评价列表")
+async def get_interview_evaluation_list(
+    db: AsyncSession = Depends(get_db)
+):
+    """
+    获取评价详情
+    """
+    return await interview_evaluation.get_interview_evaluation_list(
+        db=db
+    )
+
 @router.get("/{id}", summary="获取评价详情")
 async def get_interview_evaluation_detail(
     id: int = Path(..., description="面试评价ID"),
